@@ -1,0 +1,40 @@
+<h3>{{form.formTitle}}</h3>
+
+<form [formGroup]="dynamicFormGroup" class="row g-3">
+    <ng-container *ngFor="let control of form.formControls">
+        <div *ngIf="['text', 'password', 'email', 'number','date'].includes(control.type)" [class]="control.class">
+            <label class="form-label">{{control.label}}</label>
+            <input [formControlName]="control.name" class="form-control" [type]="control.type">
+        </div>
+        <div *ngIf="control.type === 'select'" [class]="control.class">
+            <label class="form-label">{{control.label}}</label>
+            <select class="form-control" [formControlName]="control.name">
+                <option selected [value]="null">Select</option>
+                <option *ngFor="let option of control.options" [value]="option.value">{{option.value}}</option>
+            </select>
+        </div>
+        <div *ngIf="control.type === 'radio'" [class]="control.class">
+            <label class="form-label">{{control?.label}}</label>
+            <ng-container *ngFor="let option of control.radioOptions">
+                <div class="form-check">
+                    <input [formControlName]="control.name" [value]="option" class="form-check-input" type="radio">
+                    <label class="form-check-label">{{ option }}</label>
+                </div>
+            </ng-container>
+        </div>
+        
+        <div *ngIf="control.type === 'checkbox'" [class]="control.class">
+            <label class="form-label">{{control?.label}}</label>
+            <ng-container *ngFor="let option of control.radioOptions">
+                <div class="form-check">
+                    <input [formControlName]="control.name" [value]="option" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">{{ option }}</label>
+                </div>
+            </ng-container>
+        </div>
+    </ng-container>
+    <div class="col-12">
+        <button (click)="onSubmit()" type="submit" class="btn btn-primary mx-2">{{form.saveBtnTitle}}</button>
+        <button (click)="resetForm()" type="button" class="btn btn-secondary mx-2">{{form.resetBtnTitle}}</button>
+    </div>
+</form>
